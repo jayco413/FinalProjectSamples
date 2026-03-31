@@ -1,0 +1,231 @@
+# AGENTS.md
+
+This file defines the repository-wide project contract for all current and future games in `C:\JavaProgramming`.
+
+It applies to:
+- `Avoid Projectiles`
+- `Super Mario Bros`
+- any future game project added to this repository
+
+If a future game is added, it must follow the same rules unless this file is explicitly updated.
+
+## Purpose
+
+Build complete games in Java and JavaFX that demonstrate technical understanding, deliberate design, clear organization, and the ability to explain and defend implementation choices.
+
+Generative AI use is allowed without restriction for the course assignment, but all AI-assisted, adapted, or externally sourced material must be integrated thoughtfully, cited appropriately, and fully understood by the team.
+
+## Contribution Rules
+
+All team members must:
+- actively contribute to the project
+- present part of the final presentation
+- be able to explain the code and design choices for the portion they present
+
+JavaDoc `@author` tags must reflect a balanced distribution of effort across teammates.
+
+## Core Game Requirements
+
+Every game project in this repository must:
+- be written in Java
+- use JavaFX for the user interface
+- not use another Java UI toolkit
+- not use external libraries or external code packages unless explicitly allowed by the instructor
+- not assume Internet access during execution
+- run on Windows and Unix-based systems such as Linux and macOS
+
+If a game includes networking:
+- it must still have one project and one `main` method
+- command-line arguments must determine client or server mode
+
+## Opening Window Requirements
+
+The opening interface for each game must:
+- be defined in an `.fxml` file
+- have a `BorderPane` as the root node
+- place a `MenuBar` in the `top` region
+
+The `MenuBar` must contain at least:
+- `File`
+- `Edit`
+- `Help`
+
+The menus must contain at least:
+- `File > Exit`
+- `Edit > Preferences`
+- `Help > Controls`
+- `Help > Rules`
+- `Help > About`
+
+## Preferences Requirements
+
+Each game must provide at least three user preferences that:
+- the player can change
+- persist across runs
+- are saved on exit or save
+- are loaded again the next time the game runs
+
+## Help Window Requirements
+
+Each game must provide `Controls`, `Rules`, and `About` screens.
+
+The `Controls` screen must explain:
+- what inputs the player can use
+- what those inputs do
+
+The `Rules` screen must explain:
+- the game objective
+- the relevant rules of play
+
+The `About` screen must include, in any order:
+- team name
+- `CI245 Java Programming`
+- `Final Project`
+- names of all team members
+- `Spring 2026`
+- name of the game
+
+The exact layout and appearance of these screens is up to the project team.
+
+## JavaFXWindow Requirement
+
+All forms must inherit from `JavaFXWindow`.
+
+This applies to:
+- startup windows
+- preferences windows
+- help windows
+- score windows
+- prompts
+- any additional forms introduced later
+
+## MVC Requirements
+
+All games must use the Model-View-Controller pattern.
+
+The model must contain:
+- game data
+- game rules
+- scoring
+- victory and defeat conditions
+- game information
+
+Game information means the facts that describe the current state of play, such as:
+- player positions
+- scores
+- health
+- lives
+- inventory
+- enemy state
+- pause state
+- whose turn it is
+- win/loss state
+- any other values that determine what is happening
+
+The view is responsible for:
+- FXML layouts
+- JavaFX scene structure
+- rendering
+- display updates
+- visual helper classes whose job is presentation
+
+The controller is responsible for:
+- keyboard input
+- mouse input
+- menu input
+- translating user actions into model operations
+
+MVC expectations:
+- keep the model independent of JavaFX UI classes whenever practical
+- keep gameplay logic out of the scene graph
+- avoid burying large game rules directly inside tiny event handlers
+- let view code reflect model state rather than decide core rules
+- treat animation and rendering as presentation, not source of truth
+- organize screens clearly, including gameplay and supporting screens
+- structure the project so major game logic can be reasoned about without launching the full JavaFX UI
+
+## Lecture Coverage Requirement
+
+Each game’s code and features must demonstrate at least one feature from each of the 11 class lectures.
+
+This must be documented clearly in:
+- the proposal plan
+- the presentation
+- the final written report
+
+## Documentation and Coding Standards
+
+All projects must follow these standards:
+- full JavaDoc commenting is mandatory
+- course coding standards must be followed
+- code must be clear, organized, documented, and understandable
+- use `@author` tags in each class in order of contribution
+- include author comments in FXML where appropriate, in the same order of contribution
+- use correct Java naming conventions
+- maintain deliberate package and class organization
+
+## AI and Source Disclosure
+
+Any code or material that is:
+- generated by AI
+- heavily influenced by AI
+- adapted from Internet sources
+- adapted from class materials
+
+must be cited academically in the source code where relevant.
+
+## Grading Breakdown
+
+Proposal: 15 points
+- game concept and gameplay loop: 4
+- MVC design plan: 4
+- lecture coverage plan: 4
+- risk and simplification plan: 3
+
+Presentation: 25 points
+- slide content and organization: 10
+- technical explanation and delivery: 15
+
+Project implementation: 35 points
+- correct Java and JavaFX usage: 10
+- code quality and organization: 10
+- game functionality: 15
+
+Final written report: 25 points
+- MVC justification: 5
+- lecture coverage: 8
+- proposal vs. final comparison: 4
+- AI/source disclosure and reflection: 4
+- technical depth and clarity: 4
+
+Maximum attainable points: 100
+
+Submission penalties:
+- submission between 6 PM and midnight on the due date: `-10`
+- submission after midnight: `0` for the entire project
+
+## Current Repository Context
+
+Current known games:
+- `Avoid Projectiles`
+- `Super Mario Bros`
+
+Shared launcher scripts currently exist at the repository root:
+- `Start-AvoidProjectiles.bat`
+- `Start-SuperMario.bat`
+
+Shared JavaFX assets currently exist under the repository root `lib/` directory.
+
+Future games may be added to this repository. When that happens:
+- they should receive their own project directory
+- they must follow this same JavaFX, MVC, menu, preferences, documentation, disclosure, presentation, and submission contract
+- this file should be updated if a future game needs additional repository-wide rules
+
+## Final Reminder
+
+This repository is not judged only on whether the games run. It is also judged on:
+- whether the designs are coherent
+- whether the code is explainable
+- whether the structure reflects course concepts
+- whether AI and external assistance are disclosed honestly
+- whether the project remains aligned with the assignment requirements
