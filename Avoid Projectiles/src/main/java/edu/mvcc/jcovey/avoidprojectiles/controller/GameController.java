@@ -29,6 +29,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.geometry.Rectangle2D;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
@@ -40,6 +42,8 @@ import javafx.stage.Stage;
  * @author Jason A. Covey
  */
 public class GameController {
+    private static final double SCREEN_USAGE_RATIO = 0.8;
+    private static final double MIN_RENDER_SCALE = 0.25;
     private static final String IMAGE_ROOT = "/edu/mvcc/jcovey/avoidprojectiles/assets/images/";
     private static final String MEDIA_ROOT = "/edu/mvcc/jcovey/avoidprojectiles/assets/media/";
     private static final double BASE_WIDTH = 800.0;
@@ -306,7 +310,24 @@ public class GameController {
         if (stage == null) {
             return;
         }
-        double scale = preferences.getWindowScale();
+        applyViewportScale(1.0);
+        stage.sizeToScene();
+
+        Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
+        double nonPlayfieldWidth = Math.max(0.0, stage.getWidth() - BASE_WIDTH);
+        double nonPlayfieldHeight = Math.max(0.0, stage.getHeight() - BASE_HEIGHT);
+        double maxStageWidth = visualBounds.getWidth() * SCREEN_USAGE_RATIO;
+        double maxStageHeight = visualBounds.getHeight() * SCREEN_USAGE_RATIO;
+        double widthScale = Math.max(MIN_RENDER_SCALE, (maxStageWidth - nonPlayfieldWidth) / BASE_WIDTH);
+        double heightScale = Math.max(MIN_RENDER_SCALE, (maxStageHeight - nonPlayfieldHeight) / BASE_HEIGHT);
+        double scale = Math.min(widthScale, heightScale);
+
+        applyViewportScale(scale);
+        stage.sizeToScene();
+        clampStageToScreen(stage, visualBounds);
+    }
+
+    private void applyViewportScale(double scale) {
         renderer.setRenderScale(scale);
         double width = BASE_WIDTH * scale;
         double height = BASE_HEIGHT * scale;
@@ -344,7 +365,15 @@ public class GameController {
 
         backgroundPrimary.setLayoutX(0.0);
         backgroundSecondary.setLayoutX(width);
-        stage.sizeToScene();
+    }
+
+    private void clampStageToScreen(Stage stage, Rectangle2D visualBounds) {
+        double maxX = Math.max(visualBounds.getMinX(), visualBounds.getMaxX() - stage.getWidth());
+        double maxY = Math.max(visualBounds.getMinY(), visualBounds.getMaxY() - stage.getHeight());
+        double clampedX = Math.max(visualBounds.getMinX(), Math.min(stage.getX(), maxX));
+        double clampedY = Math.max(visualBounds.getMinY(), Math.min(stage.getY(), maxY));
+        stage.setX(clampedX);
+        stage.setY(clampedY);
     }
 
     private Stage currentStage() {

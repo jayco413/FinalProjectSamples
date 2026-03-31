@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Author: Jason A. Covey
+-->
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.mvcc.jcovey.mario.controller.GameController">
+    <top>
+        <MenuBar>
+            <menus>
+                <Menu text="File">
+                    <items>
+                        <MenuItem fx:id="exitMenuItem" text="Exit" />
+                    </items>
+                </Menu>
+                <Menu text="Edit">
+                    <items>
+                        <MenuItem fx:id="preferencesMenuItem" text="Preferences" />
+                    </items>
+                </Menu>
+                <Menu text="Help">
+                    <items>
+                        <MenuItem fx:id="controlsMenuItem" text="Controls" />
+                        <MenuItem fx:id="rulesMenuItem" text="Rules" />
+                        <MenuItem fx:id="aboutMenuItem" text="About" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+    <center>
+        <StackPane fx:id="gamePane" prefWidth="1024.0" prefHeight="960.0" style="-fx-background-color: #5c94fc;">
+            <children>
+                <Canvas fx:id="gameCanvas" width="1024.0" height="960.0" />
+            </children>
+        </StackPane>
+    </center>
+    <bottom>
+        <HBox spacing="12.0" style="-fx-background-color: #1f1f1f; -fx-padding: 8 12 8 12;">
+            <children>
+                <Label fx:id="statusLabel" style="-fx-text-fill: white;" text="Status:" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Label fx:id="integrityLabel" style="-fx-text-fill: #d6f5ff;" text="Level SHA-256:" />
+            </children>
+        </HBox>
+    </bottom>
+</BorderPane>

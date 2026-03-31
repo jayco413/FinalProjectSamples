@@ -16,11 +16,13 @@ import java.nio.file.Path;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
@@ -29,6 +31,9 @@ import javafx.stage.Stage;
  * @author Jason A. Covey
  */
 public class GameController {
+    private static final double SCREEN_USAGE_RATIO = 0.8;
+    private static final double MIN_RENDER_SCALE = 0.25;
+
     @FXML
     private MenuItem exitMenuItem;
 
@@ -230,15 +235,43 @@ public class GameController {
     }
 
     private void resizeForPreferences() {
-        double scale = userPreferences.getWindowScale();
+        Stage stage = getStageIfAvailable();
+        if (stage == null) {
+            applyViewportScale(1.0);
+            return;
+        }
+
+        applyViewportScale(1.0);
+        stage.sizeToScene();
+
+        Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
+        double nonPlayfieldWidth = Math.max(0.0, stage.getWidth() - GameConstants.VIEWPORT_WIDTH);
+        double nonPlayfieldHeight = Math.max(0.0, stage.getHeight() - GameConstants.VIEWPORT_HEIGHT);
+        double maxStageWidth = visualBounds.getWidth() * SCREEN_USAGE_RATIO;
+        double maxStageHeight = visualBounds.getHeight() * SCREEN_USAGE_RATIO;
+        double widthScale = Math.max(MIN_RENDER_SCALE, (maxStageWidth - nonPlayfieldWidth) / GameConstants.VIEWPORT_WIDTH);
+        double heightScale = Math.max(MIN_RENDER_SCALE, (maxStageHeight - nonPlayfieldHeight) / GameConstants.VIEWPORT_HEIGHT);
+        double scale = Math.min(widthScale, heightScale);
+
+        applyViewportScale(scale);
+        stage.sizeToScene();
+        clampStageToScreen(stage, visualBounds);
+    }
+
+    private void applyViewportScale(double scale) {
         gameCanvas.setWidth(GameConstants.VIEWPORT_WIDTH * scale);
         gameCanvas.setHeight(GameConstants.VIEWPORT_HEIGHT * scale);
         gamePane.setPrefWidth(gameCanvas.getWidth());
         gamePane.setPrefHeight(gameCanvas.getHeight());
-        Stage stage = getStageIfAvailable();
-        if (stage != null) {
-            stage.sizeToScene();
-        }
+    }
+
+    private void clampStageToScreen(Stage stage, Rectangle2D visualBounds) {
+        double maxX = Math.max(visualBounds.getMinX(), visualBounds.getMaxX() - stage.getWidth());
+        double maxY = Math.max(visualBounds.getMinY(), visualBounds.getMaxY() - stage.getHeight());
+        double clampedX = Math.max(visualBounds.getMinX(), Math.min(stage.getX(), maxX));
+        double clampedY = Math.max(visualBounds.getMinY(), Math.min(stage.getY(), maxY));
+        stage.setX(clampedX);
+        stage.setY(clampedY);
     }
 
     private void updateStatusBar() {

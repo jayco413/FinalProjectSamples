@@ -27,3 +27,6 @@ avoid-projectiles-preferences.json
 avoid-projectiles-high-scores.json
 user-preferences.json
 super-mario-high-scores.json
+
+# Local Java installation
+jdk/
