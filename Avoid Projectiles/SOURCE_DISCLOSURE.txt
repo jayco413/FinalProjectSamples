@@ -1,0 +1,18 @@
+AI and Source Disclosure
+
+Team: Team Professor
+Members: Jason A. Covey
+
+1. Course-provided material
+- `JavaFXWindow` was adapted from the provided course utility class so every form in the project can inherit from it as required.
+
+2. AI-assisted work
+- AI assistance was used to identify assignment gaps, reorganize the original single-controller game into MVC, draft JavaFX help/preferences windows, and draft the proposal/report text files.
+- All AI-assisted code was reviewed, compiled, corrected, and adjusted to match the actual project structure and original gameplay features.
+
+3. Original project source
+- The original Avoid Projectiles gameplay, assets, and JavaFX implementation were created by Jason A. Covey and were used as the source material for this rewrite.
+
+4. External assets and runtime assumptions
+- The game uses only local image and audio assets included in the repository.
+- No runtime Internet access is required by the game.

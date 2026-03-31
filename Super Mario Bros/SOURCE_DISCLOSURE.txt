@@ -1,0 +1,15 @@
+AI and Source Disclosure
+
+Team: Team Professor
+Members: Jason A. Covey
+
+1. Course-provided material
+- `JavaFXWindow` was adapted from the provided course utility class so every form in the project can inherit from it as required.
+
+2. AI-assisted work
+- AI assistance was used to identify requirement gaps, draft JavaFX menu/help/preferences windows, refine controller wiring, and draft the proposal/report text files.
+- All AI-assisted code was reviewed, compiled, and corrected before being kept.
+
+3. External assets and source material
+- The project uses local Mario-inspired art, audio, and level data already included in the repository.
+- No runtime Internet access is required by the game.

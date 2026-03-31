@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Author: Jason A. Covey
+-->
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefWidth="420.0" prefHeight="250.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.mvcc.jcovey.avoidprojectiles.app.PreferencesWindowController">
+    <center>
+        <VBox spacing="10.0" style="-fx-padding: 14;">
+            <children>
+                <Label style="-fx-font-size: 18px;" text="Preferences" />
+                <CheckBox fx:id="soundCheckBox" mnemonicParsing="false" text="Enable sound effects" />
+                <HBox alignment="CENTER_LEFT" spacing="8.0">
+                    <children>
+                        <Label text="Window scale:" />
+                        <ComboBox fx:id="scaleComboBox" prefWidth="140.0" />
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="8.0">
+                    <children>
+                        <Label text="Difficulty:" />
+                        <ComboBox fx:id="difficultyComboBox" prefWidth="140.0" />
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="8.0">
+                    <children>
+                        <Label text="Player speed:" />
+                        <ComboBox fx:id="playerSpeedComboBox" prefWidth="140.0" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" spacing="8.0" style="-fx-padding: 0 14 14 14;">
+            <children>
+                <Button mnemonicParsing="false" onAction="#handleCancel" text="Cancel" />
+                <Button mnemonicParsing="false" onAction="#handleSave" text="Save" />
+            </children>
+        </HBox>
+    </bottom>
+</BorderPane>
