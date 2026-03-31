@@ -6,12 +6,18 @@ SRC_ROOT="$PROJECT_ROOT/src/main/java"
 RESOURCES_ROOT="$PROJECT_ROOT/src/main/resources"
 OUT_ROOT="$PROJECT_ROOT/out"
 CLASSES_ROOT="$OUT_ROOT/classes"
-JAVAFX_LIB="${JAVAFX_LIB:-$PROJECT_ROOT/lib/javafx-sdk-23.0.2/lib}"
+WORKSPACE_ROOT="$(cd "$PROJECT_ROOT/.." && pwd)"
+JAVAFX_LIB="${JAVAFX_LIB:-$WORKSPACE_ROOT/Common Libraries/javafx-sdk-23.0.2/lib}"
+if [[ ! -d "$JAVAFX_LIB" ]]; then
+  JAVAFX_LIB="$WORKSPACE_ROOT/lib/javafx-sdk-23.0.2/lib"
+fi
 
 if [[ ! -d "$JAVAFX_LIB" ]]; then
   echo "JavaFX SDK not found at $JAVAFX_LIB" >&2
   exit 1
 fi
+
+cd "$PROJECT_ROOT"
 
 mkdir -p "$CLASSES_ROOT"
 find "$SRC_ROOT" -name "*.java" -print0 | xargs -0 javac \

@@ -23,6 +23,9 @@ import javafx.scene.paint.Color;
 /**
  * Presentation-only renderer that synchronizes JavaFX nodes from model state.
  *
+ * <p>AI-assisted ready-screen leaderboard presentation reviewed and integrated
+ * by Jason A. Covey.</p>
+ *
  * @author Jason A. Covey
  */
 public class GameRenderer {
@@ -37,11 +40,15 @@ public class GameRenderer {
     private final Label scoreLabel;
     private final Label statusLabel;
     private final Button startButton;
+    private final Label startMessageLabel;
+    private final Label highScoresTitleLabel;
+    private final Label highScoresLabel;
     private final Map<Integer, ImageView> projectileViews;
     private final Map<ProjectileKind, Image> projectileImages;
     private final Map<Image, Image> invertedImageCache;
     private final Image marioBaseImage;
     private double renderScale;
+    private String highScoreSummary;
 
     /**
      * Creates the renderer.
@@ -54,6 +61,9 @@ public class GameRenderer {
      * @param scoreLabel score display node
      * @param statusLabel status display node
      * @param startButton overlay button shown before play
+     * @param startMessageLabel ready-screen objective label
+     * @param highScoresTitleLabel ready-screen leaderboard heading
+     * @param highScoresLabel ready-screen leaderboard body
      */
     public GameRenderer(
         ImageView backgroundPrimary,
@@ -63,7 +73,10 @@ public class GameRenderer {
         Canvas overlayCanvas,
         Label scoreLabel,
         Label statusLabel,
-        Button startButton
+        Button startButton,
+        Label startMessageLabel,
+        Label highScoresTitleLabel,
+        Label highScoresLabel
     ) {
         this.backgroundPrimary = backgroundPrimary;
         this.backgroundSecondary = backgroundSecondary;
@@ -73,11 +86,15 @@ public class GameRenderer {
         this.scoreLabel = scoreLabel;
         this.statusLabel = statusLabel;
         this.startButton = startButton;
+        this.startMessageLabel = startMessageLabel;
+        this.highScoresTitleLabel = highScoresTitleLabel;
+        this.highScoresLabel = highScoresLabel;
         projectileViews = new HashMap<>();
         projectileImages = new HashMap<>();
         invertedImageCache = new HashMap<>();
         marioBaseImage = marioImageView.getImage();
         renderScale = 1.0;
+        highScoreSummary = "No recorded times yet.\nFinish a 100-point run to set the pace.";
     }
 
     /**
@@ -87,6 +104,15 @@ public class GameRenderer {
      */
     public void setRenderScale(double renderScale) {
         this.renderScale = renderScale;
+    }
+
+    /**
+     * Updates the start-screen leaderboard text.
+     *
+     * @param highScoreSummary formatted leaderboard body
+     */
+    public void setHighScoreSummary(String highScoreSummary) {
+        this.highScoreSummary = highScoreSummary;
     }
 
     /**
@@ -101,7 +127,12 @@ public class GameRenderer {
         renderOverlay(gameModel);
         scoreLabel.setText(gameModel.getFormattedScore());
         statusLabel.setText(gameModel.getStatusText());
-        startButton.setVisible(gameModel.getPhase() == GamePhase.READY);
+        boolean ready = gameModel.getPhase() == GamePhase.READY;
+        startButton.setVisible(ready);
+        startMessageLabel.setVisible(ready);
+        highScoresTitleLabel.setVisible(ready);
+        highScoresLabel.setVisible(ready);
+        highScoresLabel.setText(highScoreSummary);
     }
 
     private void renderBackground(GameModel gameModel) {

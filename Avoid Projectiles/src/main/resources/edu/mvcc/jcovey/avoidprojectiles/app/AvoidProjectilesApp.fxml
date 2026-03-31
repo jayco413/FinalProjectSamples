@@ -25,6 +25,7 @@
             <menus>
                 <Menu text="File">
                     <items>
+                        <MenuItem fx:id="highScoresMenuItem" text="High Scores" />
                         <MenuItem fx:id="exitMenuItem" text="Exit" />
                     </items>
                 </Menu>
@@ -58,7 +59,22 @@
                                 <Font size="34.0" />
                             </font>
                         </Label>
+                        <Label fx:id="startMessageLabel" layoutX="235.0" layoutY="180.0" text="Reach 100 points as fast as possible." textFill="#fff7d6">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                        </Label>
                         <Button fx:id="startGameButton" layoutX="337.0" layoutY="224.0" mnemonicParsing="false" onAction="#handleStartGame" text="Start Game" />
+                        <Label fx:id="highScoresTitleLabel" layoutX="26.0" layoutY="56.0" text="Top 10 Times" textFill="#ffe6a7">
+                            <font>
+                                <Font size="22.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="highScoresLabel" layoutX="28.0" layoutY="90.0" prefWidth="220.0" text="No recorded times yet." textFill="WHITE" wrapText="true">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </Label>
                     </children>
                 </AnchorPane>
             </children>
@@ -72,7 +88,7 @@
                 <Region HBox.hgrow="ALWAYS" />
                 <Label fx:id="integrityLabel" text="Asset SHA-256: computing..." textFill="#ffe6a7" />
                 <Region HBox.hgrow="ALWAYS" />
-                <Label text="Goal: 100 points" textFill="#c5ffc5" />
+                <Label text="Goal: 100 points fast" textFill="#c5ffc5" />
             </children>
         </HBox>
     </bottom>

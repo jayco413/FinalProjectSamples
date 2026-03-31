@@ -5,27 +5,30 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
- * Window that presents required course and team metadata.
+ * Window that displays the current top 10 completion times.
  *
- * <p>AI-assisted documentation updates reviewed and integrated by Jason A. Covey.</p>
+ * <p>AI-assisted implementation reviewed and integrated by Jason A. Covey.</p>
  *
  * @author Jason A. Covey
  */
-public class AboutWindow extends JavaFXWindow {
+public class HighScoresWindow extends JavaFXWindow {
     private final Stage owner;
+    private final String highScoreText;
 
     /**
-     * Creates the about window.
+     * Creates the high-scores window.
      *
      * @param owner the owning stage
+     * @param highScoreText the formatted leaderboard body text
      */
-    public AboutWindow(Stage owner) {
+    public HighScoresWindow(Stage owner, String highScoreText) {
         this.owner = owner;
+        this.highScoreText = highScoreText;
     }
 
     @Override
     protected String getStageTitle() {
-        return "About";
+        return "High Scores";
     }
 
     @Override
@@ -39,20 +42,12 @@ public class AboutWindow extends JavaFXWindow {
     protected void configureController(Stage stage, Object controllerInstance) {
         InfoWindowController controller = (InfoWindowController) controllerInstance;
         controller.configure(
-            "About",
+            "High Scores",
             """
-            Name of the game: Avoid Projectiles
-            Team name: Team Professor
-            Team members: Jason A. Covey
-            Course: CI245 Java Programming
-            Assignment: Final Project
-            Term: Spring 2026
+            Fastest runs to 100 points:
 
-            This version restructures the original game into an MVC JavaFX project
-            with a required menu-based startup window, persistent preferences,
-            persistent high scores, and dedicated help forms while preserving
-            the original gameplay loop.
-            """
+            %s
+            """.formatted(highScoreText)
         );
     }
 

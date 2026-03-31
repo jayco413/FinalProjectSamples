@@ -7,6 +7,8 @@ import javafx.stage.Stage;
 /**
  * Window that explains the game rules and objective.
  *
+ * <p>AI-assisted documentation updates reviewed and integrated by Jason A. Covey.</p>
+ *
  * @author Jason A. Covey
  */
 public class RulesWindow extends JavaFXWindow {
@@ -40,7 +42,7 @@ public class RulesWindow extends JavaFXWindow {
             "Rules",
             """
             Objective:
-            Survive long enough to reach 100 points.
+            Reach 100 points in as little time as possible.
 
             Core rules:
             Move Mario around the playfield to avoid incoming projectiles.
@@ -50,7 +52,8 @@ public class RulesWindow extends JavaFXWindow {
             Mini Mushrooms temporarily shrink Mario, making him a smaller target.
 
             Winning and losing:
-            Reaching 100 points resets the run after a victory message.
+            Reaching 100 points ends the run and shows the completion time.
+            Fast runs can enter the top-10 high-score table with player initials.
             A hit from a Bullet Bill does not end the game immediately, but it breaks
             the survival streak by forcing the player to continue under pressure.
             """

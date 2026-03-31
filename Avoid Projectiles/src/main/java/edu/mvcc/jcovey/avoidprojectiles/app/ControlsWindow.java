@@ -7,6 +7,8 @@ import javafx.stage.Stage;
 /**
  * Window that documents the game controls.
  *
+ * <p>AI-assisted documentation updates reviewed and integrated by Jason A. Covey.</p>
+ *
  * @author Jason A. Covey
  */
 public class ControlsWindow extends JavaFXWindow {
@@ -45,11 +47,13 @@ public class ControlsWindow extends JavaFXWindow {
             Right Arrow: move Mario right
 
             During play:
-            Avoid Bullet Bills until they leave the screen to earn points.
+            Let Bullet Bills pass safely to earn one point each.
             Collect Starmen for temporary invincibility.
             Collect Mini Mushrooms to shrink Mario for a limited time.
+            The run ends at 100 points, so finish as quickly as possible.
 
             Menus:
+            File > High Scores opens the saved top-10 leaderboard.
             File > Exit closes the game.
             Edit > Preferences opens the persistent settings window.
             Help > Controls, Rules, and About open the required help screens.

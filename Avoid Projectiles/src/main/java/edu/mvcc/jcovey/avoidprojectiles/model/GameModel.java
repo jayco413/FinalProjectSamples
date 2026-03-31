@@ -16,6 +16,8 @@ import java.util.Random;
  *
  * <p>Original gameplay and asset set by Jason A. Covey. This MVC rewrite was
  * reorganized for final-project compliance while preserving the core features.</p>
+ * <p>AI-assisted timing and leaderboard additions reviewed and integrated by
+ * Jason A. Covey.</p>
  *
  * @author Jason A. Covey
  */
@@ -38,7 +40,10 @@ public class GameModel {
     private int score;
     private int nextProjectileId;
     private long tickCount;
+    private long runStartNanos;
+    private double elapsedSeconds;
     private String statusText;
+    private RunCompletion pendingCompletion;
 
     /**
      * Creates a fresh game model.
@@ -68,14 +73,20 @@ public class GameModel {
      *
      * @param input the current user input
      * @param preferences active user preferences
+     * @param nowNanos current animation clock time
      */
-    public void update(InputState input, UserPreferences preferences) {
+    public void update(InputState input, UserPreferences preferences, long nowNanos) {
         if (phase != GamePhase.PLAYING) {
             return;
         }
 
+        if (runStartNanos <= 0L) {
+            runStartNanos = nowNanos;
+        }
+
         boolean wasInvincible = player.isInvincible();
         tickCount++;
+        elapsedSeconds = (nowNanos - runStartNanos) / 1_000_000_000.0;
         backgroundOffset = (backgroundOffset + getBackgroundSpeed(preferences)) % WORLD_WIDTH;
         player.move(input, getPlayerSpeed(preferences), WORLD_WIDTH, WORLD_HEIGHT);
         player.tickEffects();
@@ -88,7 +99,7 @@ public class GameModel {
         updateProjectiles();
 
         if (score >= 100) {
-            resetToReadyState("You reached 100 points. Start another run.");
+            completeRun();
         }
     }
 
@@ -175,6 +186,26 @@ public class GameModel {
      */
     public long getTickCount() {
         return tickCount;
+    }
+
+    /**
+     * Gets the elapsed time for the active or most recent run.
+     *
+     * @return elapsed seconds
+     */
+    public double getElapsedSeconds() {
+        return elapsedSeconds;
+    }
+
+    /**
+     * Returns and clears a pending run-completion event.
+     *
+     * @return the completed run snapshot, or {@code null} when no run just finished
+     */
+    public RunCompletion consumePendingCompletion() {
+        RunCompletion completion = pendingCompletion;
+        pendingCompletion = null;
+        return completion;
     }
 
     private void tickMiniEffects() {
@@ -315,11 +346,31 @@ public class GameModel {
         score = 0;
         nextProjectileId = 1;
         tickCount = 0L;
+        runStartNanos = -1L;
+        elapsedSeconds = 0.0;
         projectiles.clear();
         miniTimers.clear();
         queuedSounds.clear();
         queuedSoundStops.clear();
+        pendingCompletion = null;
         player.reset();
         statusText = statusMessage;
+    }
+
+    private void completeRun() {
+        phase = GamePhase.READY;
+        backgroundOffset = 0.0;
+        projectiles.clear();
+        miniTimers.clear();
+        queuedSounds.clear();
+        queuedSoundStops.clear();
+        queuedSoundStops.addLast(ProjectileKind.STARMAN.getSoundName());
+        player.reset();
+        pendingCompletion = new RunCompletion(score, elapsedSeconds);
+        statusText = "You reached 100 points in " + formatElapsedSeconds(elapsedSeconds) + ".";
+    }
+
+    private static String formatElapsedSeconds(double seconds) {
+        return String.format("%.2f seconds", seconds);
     }
 }
