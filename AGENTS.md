@@ -211,14 +211,24 @@ Current known games:
 - `Super Mario Bros`
 
 Shared launcher scripts currently exist at the repository root:
-- `Start-AvoidProjectiles.bat`
-- `Start-SuperMario.bat`
+- Windows launchers must begin with `Windows-`
+- macOS launchers must begin with `MacOS-`
+- Linux launchers must begin with `Linux-`
+
+Current root launcher examples:
+- `Windows-Start-AvoidProjectiles.bat`
+- `Windows-Start-SuperMario.bat`
+- `MacOS-Start-AvoidProjectiles.command`
+- `MacOS-Start-SuperMario.command`
+- `Linux-Start-AvoidProjectiles.sh`
+- `Linux-Start-SuperMario.sh`
 
 Shared JavaFX assets currently exist under the repository root `lib/` directory.
 
 Future games may be added to this repository. When that happens:
 - they should receive their own project directory
 - they must follow this same JavaFX, MVC, menu, preferences, documentation, disclosure, presentation, and submission contract
+- any new root-level convenience launcher should use the same explicit platform prefix naming convention
 - this file should be updated if a future game needs additional repository-wide rules
 
 ## Final Reminder
