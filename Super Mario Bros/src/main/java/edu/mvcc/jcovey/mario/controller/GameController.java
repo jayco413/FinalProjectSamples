@@ -145,17 +145,25 @@ public class GameController {
             soundEffectPlayer.playAll(gameModel.drainSoundEffects());
             syncBackgroundMusic();
             refreshIntegrityLabel();
-        } else if (keyCode == KeyCode.DIGIT1) {
-            gameModel.loadWorld1_1();
-            soundEffectPlayer.playAll(gameModel.drainSoundEffects());
-            syncBackgroundMusic();
-            refreshIntegrityLabel();
-        } else if (keyCode == KeyCode.DIGIT2) {
-            gameModel.loadWorld1_2();
+        } else if (handleCourseShortcut(keyCode)) {
             soundEffectPlayer.playAll(gameModel.drainSoundEffects());
             syncBackgroundMusic();
             refreshIntegrityLabel();
         }
+    }
+
+    private boolean handleCourseShortcut(KeyCode keyCode) {
+        int shortcutDigit;
+        if (keyCode == KeyCode.DIGIT1) {
+            shortcutDigit = 1;
+        } else if (keyCode == KeyCode.DIGIT2) {
+            shortcutDigit = 2;
+        } else if (keyCode == KeyCode.DIGIT3) {
+            shortcutDigit = 3;
+        } else {
+            return false;
+        }
+        return gameModel.loadCourseByShortcut(shortcutDigit);
     }
 
     private void handleReleased(KeyCode keyCode) {
@@ -208,11 +216,7 @@ public class GameController {
         userPreferences.save();
         applyPreferences(false);
         if (startWorldChanged) {
-            if ("1-2".equals(userPreferences.getStartWorld())) {
-                gameModel.loadWorld1_2();
-            } else {
-                gameModel.loadWorld1_1();
-            }
+            gameModel.loadCourseByWorldText(userPreferences.getStartWorld());
             soundEffectPlayer.playAll(gameModel.drainSoundEffects());
             refreshIntegrityLabel();
         }
@@ -223,11 +227,7 @@ public class GameController {
         soundEffectPlayer.setEnabled(userPreferences.isSoundEnabled());
         resizeForPreferences();
         if (initialLoad) {
-            if ("1-2".equals(userPreferences.getStartWorld())) {
-                gameModel.loadWorld1_2();
-            } else {
-                gameModel.loadWorld1_1();
-            }
+            gameModel.loadCourseByWorldText(userPreferences.getStartWorld());
         }
         syncBackgroundMusic();
         renderFrame();

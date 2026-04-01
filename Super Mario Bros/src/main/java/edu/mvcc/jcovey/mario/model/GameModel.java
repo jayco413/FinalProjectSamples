@@ -2,8 +2,10 @@ package edu.mvcc.jcovey.mario.model;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class GameModel {
     private static final Path WORLD_1_1_PATH = Path.of("assets", "layouts", "1-1_structural.txt");
@@ -13,9 +15,9 @@ public class GameModel {
     private static final Path BONUS_PATH = Path.of("assets", "layouts", "1-1_bonus_area.txt");
 
     private final MarioModel mario = new MarioModel();
-    private final CampaignLevelModel world1_1Level = new CampaignLevelModel("1-1", "overworld", WORLD_1_1_PATH);
-    private final CampaignLevelModel world1_2Level = new CampaignLevelModel("1-2", "underground", WORLD_1_2_PATH);
-    private final CampaignLevelModel world1_3Level = new CampaignLevelModel("1-3", "overworld", WORLD_1_3_PATH);
+    private final CampaignLevelModel world1_1Level = new CampaignLevelModel("1-1", 1, "overworld", WORLD_1_1_PATH);
+    private final CampaignLevelModel world1_2Level = new CampaignLevelModel("1-2", 2, "underground", WORLD_1_2_PATH);
+    private final CampaignLevelModel world1_3Level = new CampaignLevelModel("1-3", 3, "overworld", WORLD_1_3_PATH);
     private final LevelModel world1_2ExitLevel = new LevelModel("overworld-exit", WORLD_1_2_EXIT_PATH);
     private final LevelModel bonusLevel = new LevelModel("bonus", BONUS_PATH);
     private final CameraModel camera = new CameraModel();
@@ -29,6 +31,8 @@ public class GameModel {
     private final List<FireballModel> fireballs = new ArrayList<>();
     private final List<FireworkModel> fireworks = new ArrayList<>();
     private final List<String> pendingSoundEffects = new ArrayList<>();
+    private final Map<Integer, CampaignLevelModel> coursesByShortcut = new HashMap<>();
+    private final Map<String, CampaignLevelModel> coursesByWorldText = new HashMap<>();
     private CampaignLevelModel selectedStartCourse;
     private CampaignLevelModel currentCourse;
     private LevelModel level;
@@ -52,7 +56,15 @@ public class GameModel {
     public GameModel() {
         world1_1Level.setNextLevel(world1_2Level);
         world1_2Level.setNextLevel(world1_3Level);
+        registerCourse(world1_1Level);
+        registerCourse(world1_2Level);
+        registerCourse(world1_3Level);
         reset();
+    }
+
+    private void registerCourse(CampaignLevelModel course) {
+        coursesByShortcut.put(course.getShortcutDigit(), course);
+        coursesByWorldText.put(course.getWorldText(), course);
     }
 
     public void reset() {
@@ -645,12 +657,37 @@ public class GameModel {
     }
 
     public void loadWorld1_1() {
-        selectedStartCourse = world1_1Level;
-        reset();
+        loadCourseByShortcut(1);
     }
 
     public void loadWorld1_2() {
-        selectedStartCourse = world1_2Level;
+        loadCourseByShortcut(2);
+    }
+
+    public void loadWorld1_3() {
+        loadCourseByShortcut(3);
+    }
+
+    public boolean loadCourseByShortcut(int shortcutDigit) {
+        CampaignLevelModel course = coursesByShortcut.get(shortcutDigit);
+        if (course == null) {
+            return false;
+        }
+        loadCourse(course);
+        return true;
+    }
+
+    public boolean loadCourseByWorldText(String worldText) {
+        CampaignLevelModel course = coursesByWorldText.get(worldText);
+        if (course == null) {
+            return false;
+        }
+        loadCourse(course);
+        return true;
+    }
+
+    private void loadCourse(CampaignLevelModel course) {
+        selectedStartCourse = course;
         score = 0;
         coinsCollected = 0;
         lives = 3;
